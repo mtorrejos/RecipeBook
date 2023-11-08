@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "895148610008",
+    "project_id": "recipe-book-4adb9",
+    "storage_bucket": "recipe-book-4adb9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895148610008:android:f679971072ad76ea8e62ad",
+        "android_client_info": {
+          "package_name": "com.example.recipebook"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAD3r3CZ8mzh4Sb1FoT1v2MxBIJyYM4j8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
