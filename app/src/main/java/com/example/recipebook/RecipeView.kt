@@ -10,7 +10,7 @@ import com.google.firebase.ktx.Firebase
 class RecipeView {
      fun getRecipes(){
         try {
-            val database = Firebase.database("https://recipe-book-4adb9-default-rtdb.asia-southeast1.firebasedatabase.app/")
+            val database = Firebase.database("//database link")
             val recipeRef = database.reference.child("dishes")
 
             recipeRef.addListenerForSingleValueEvent(object : ValueEventListener {
