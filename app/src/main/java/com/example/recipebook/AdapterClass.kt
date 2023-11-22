@@ -30,7 +30,6 @@ class AdapterClass(var dishList : ArrayList<Dish>) : RecyclerView.Adapter<Adapte
     override fun onBindViewHolder(holder: AdapterClass.ViewHolderClass, position: Int) {
         var currentItems = dishList[position]
         holder.title.text = currentItems.name
-        holder.image.setImageResource(currentItems.image)
     }
 
     override fun getItemCount(): Int {

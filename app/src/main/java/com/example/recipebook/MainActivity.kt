@@ -77,7 +77,7 @@ open class MainActivity : AppCompatActivity() {
             val ingredient = Ingredient("potato, 1kg")
             val tempIng: ArrayList<Ingredient> = arrayListOf(ingredient)
             val dishChildCreate = dishRef.child((spnDB.selectedItem.toString())).ref //get reference to dishID: #
-            val updateDishData = Dish(edtUpdate.text.toString(), "recipe", tempIng, R.drawable.ic_launcher_background)
+            val updateDishData = Dish(edtUpdate.text.toString(), "recipe", tempIng, null)
             dishChildCreate.setValue(updateDishData)
         }
     }
@@ -86,7 +86,7 @@ fun uploadData() {
     var ingredients : ArrayList<Ingredient> = arrayListOf()
     try {
 
-        val testDish = Dish("dishID: "+ (childCount).toString(),"test recipe", ingredients, R.drawable.ic_launcher_background) //dish details
+        val testDish = Dish("dishID: "+ (childCount).toString(),"test recipe", ingredients, null) //dish details
         //val dishChildCreate = dishRef.push() //reference child creation, push() is the function that creates the child
         //dishChildCreate.child((childCount++).toString()).setValue(testDish) //creates the actual child with specified path and sets the value
 
