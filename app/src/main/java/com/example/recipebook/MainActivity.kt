@@ -1,5 +1,6 @@
 package com.example.recipebook
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,7 +20,7 @@ open class MainActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
     lateinit var dishList : ArrayList<Dish>
-    val database = Firebase.database("//database link")
+    val database = Firebase.database(DatabaseConnect().connection)
     val recipeView = RecipeView()
     val dishRef = database.getReference("dishes")
     var childCount: Long = 0
@@ -35,10 +36,14 @@ open class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-
         recipeView.getRecipes()
 
         dishList = arrayListOf()
+
+        findViewById<Button>(R.id.btnMove).setOnClickListener(){
+            val intent = Intent(this, DishCreate::class.java)
+            startActivity(intent)
+        }
 
         //dishRef child counter
         dishRef.addListenerForSingleValueEvent(object : ValueEventListener {
