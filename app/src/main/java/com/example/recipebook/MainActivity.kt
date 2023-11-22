@@ -1,5 +1,6 @@
 package com.example.recipebook
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,7 +20,7 @@ open class MainActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
     lateinit var dishList : ArrayList<Dish>
-    val database = Firebase.database("//database link")
+    val database = Firebase.database(DatabaseConnect().connection)
     val recipeView = RecipeView()
     val dishRef = database.getReference("dishes")
     var childCount: Long = 0
@@ -35,10 +36,14 @@ open class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-
         recipeView.getRecipes()
 
         dishList = arrayListOf()
+
+        findViewById<Button>(R.id.btnMove).setOnClickListener(){
+            val intent = Intent(this, DishCreate::class.java)
+            startActivity(intent)
+        }
 
         //dishRef child counter
         dishRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -72,7 +77,7 @@ open class MainActivity : AppCompatActivity() {
             val ingredient = Ingredient("potato, 1kg")
             val tempIng: ArrayList<Ingredient> = arrayListOf(ingredient)
             val dishChildCreate = dishRef.child((spnDB.selectedItem.toString())).ref //get reference to dishID: #
-            val updateDishData = Dish(edtUpdate.text.toString(), "recipe", tempIng, R.drawable.ic_launcher_background)
+            val updateDishData = Dish(edtUpdate.text.toString(), "recipe", tempIng, null)
             dishChildCreate.setValue(updateDishData)
         }
     }
@@ -81,7 +86,7 @@ fun uploadData() {
     var ingredients : ArrayList<Ingredient> = arrayListOf()
     try {
 
-        val testDish = Dish("dishID: "+ (childCount).toString(),"test recipe", ingredients, R.drawable.ic_launcher_background) //dish details
+        val testDish = Dish("dishID: "+ (childCount).toString(),"test recipe", ingredients, null) //dish details
         //val dishChildCreate = dishRef.push() //reference child creation, push() is the function that creates the child
         //dishChildCreate.child((childCount++).toString()).setValue(testDish) //creates the actual child with specified path and sets the value
 

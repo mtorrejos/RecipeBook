@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<LinearLayout
+
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:id="@+id/mainLinearLayout"
+    android:orientation="vertical">
 
     <!-- Edit Recipe Title -->
     <EditText
@@ -24,43 +30,58 @@
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_launcher_background"/>
 
-    <!-- Button to Pick/Edit Recipe Image -->
-    <Button
-        android:id="@+id/btnPickImage"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editRecipeImage"
-        android:layout_marginTop="8dp"
-        android:text="Pick/Edit Image" />
+        android:orientation="horizontal">
+        <!-- Button to Pick/Edit Recipe Image -->
+            <Button
+                android:id="@+id/btnPickImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editRecipeImage"
+                android:layout_marginTop="8dp"
+                android:text="Pick/Edit Image" />
 
-    <!-- Edit Recipe Ingredients -->
-    <EditText
-        android:id="@+id/editRecipeIngredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Recipe Ingredients"
-        android:layout_below="@id/btnPickImage"
-        android:layout_marginTop="16dp"
-        android:inputType="textMultiLine"/>
+            <!-- Save Button -->
+            <Button
+                android:id="@+id/btnSaveRecipe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:layout_below="@id/editRecipeInstructions"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp" />
+    </LinearLayout>
 
-    <!-- Edit Recipe Instructions -->
     <EditText
         android:id="@+id/editRecipeInstructions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Recipe Instructions"
-        android:layout_below="@id/editRecipeIngredients"
+        android:layout_below="@id/btnAddIngredient"
         android:layout_marginTop="16dp"
         android:inputType="textMultiLine"/>
 
-    <!-- Save Button -->
     <Button
-        android:id="@+id/btnSaveRecipe"
+        android:id="@+id/btnAddIngredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
-        android:layout_below="@id/editRecipeInstructions"
         android:layout_marginTop="16dp"
-        android:onClick="onSaveButtonClick"/> <!-- Specify the method to call when the button is clicked -->
+        android:layout_below="@id/editRecipeInstructions"
+        android:text="Add Ingredient" />
 
-</RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/editRecipeIngredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Recipe Ingredient"
+        android:layout_below="@id/btnPickImage"
+        android:layout_marginTop="16dp" />
+
+
+
+</LinearLayout>
+</ScrollView>
