@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/annie_use_your_telescope"
         android:gravity="center"
-        android:text="Recipe Book"
+        android:text="Recipe Delights"
         android:textStyle="bold"
         android:textSize="38sp" />
 
