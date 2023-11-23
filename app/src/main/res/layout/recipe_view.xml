@@ -3,27 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/background">
 
     <!-- Title -->
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="casual"
-        android:text="Recipe Book"
-        android:textSize="38sp"
-        android:textStyle="bold|italic"
-        android:gravity="center"/>
+        android:fontFamily="@font/annie_use_your_telescope"
+        android:gravity="center"
+        android:text="Recipe Delights"
+        android:textStyle="bold"
+        android:textSize="38sp" />
 
     <!-- RecyclerView for recipes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
+        android:fontFamily="@font/annie_use_your_telescope"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"/>
 
 </LinearLayout>
-//
+    //
