@@ -2,7 +2,8 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/background">
 <LinearLayout
 
     android:layout_width="match_parent"
@@ -16,9 +17,11 @@
         android:id="@+id/editRecipeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Recipe Title"
         android:layout_marginBottom="16dp"
-        android:inputType="text"/>
+        android:fontFamily="@font/annie_use_your_telescope"
+        android:hint="Enter Recipe Title"
+        android:inputType="text"
+        android:textStyle="bold" />
 
     <!-- Edit Recipe Image -->
     <ImageView
@@ -41,6 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/editRecipeImage"
             android:layout_marginTop="8dp"
+            android:backgroundTint="@color/darkbrown"
+            android:fontFamily="@font/langar"
             android:text="Pick/Edit Image" />
 
         <!-- Save Button -->
@@ -50,6 +55,8 @@
             android:layout_height="wrap_content"
             android:text="Save"
             android:layout_below="@id/editRecipeInstructions"
+            android:backgroundTint="@color/darkbrown"
+            android:fontFamily="@font/langar"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp" />
 
@@ -58,6 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/editRecipeInstructions"
+            android:backgroundTint="@color/darkbrown"
+            android:fontFamily="@font/langar"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
@@ -70,6 +79,8 @@
         android:layout_height="wrap_content"
         android:hint="Enter Recipe Instructions"
         android:layout_below="@id/btnAddIngredient"
+
+        android:textStyle="bold"
         android:layout_marginTop="16dp"
         android:inputType="textMultiLine"/>
 
@@ -79,6 +90,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_below="@id/editRecipeInstructions"
+        android:backgroundTint="@color/darkbrown"
+        android:fontFamily="@font/langar"
         android:text="Add Ingredient" />
 
 
