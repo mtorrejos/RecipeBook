@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+    <LinearLayout
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:id="@+id/mainLinearLayout"
+        android:orientation="vertical">
+
+        <!-- Edit Recipe Title -->
+        <TextView
+            android:id="@+id/txtRecipeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipe Title"
+            android:layout_marginBottom="16dp"
+            android:inputType="text"/>
+
+        <!-- Edit Recipe Image -->
+        <ImageView
+            android:id="@+id/imgRecipeImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_below="@id/editRecipeTitle"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_launcher_background"/>
+
+        <TextView
+            android:id="@+id/txtRecipeInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="EntRecipe Instructions"
+            android:layout_below="@id/btnAddIngredient"
+            android:layout_marginTop="16dp"
+            android:inputType="textMultiLine"/>
+
+        <TextView
+            android:id="@+id/txtRecipeIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipe Ingredient"
+            android:layout_below="@id/btnPickImage"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>

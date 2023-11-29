@@ -35,23 +35,33 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <!-- Button to Pick/Edit Recipe Image -->
-            <Button
-                android:id="@+id/btnPickImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editRecipeImage"
-                android:layout_marginTop="8dp"
-                android:text="Pick/Edit Image" />
+        <Button
+            android:id="@+id/btnPickImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editRecipeImage"
+            android:layout_marginTop="8dp"
+            android:text="Pick/Edit Image" />
 
-            <!-- Save Button -->
-            <Button
-                android:id="@+id/btnSaveRecipe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Save"
-                android:layout_below="@id/editRecipeInstructions"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="16dp" />
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/btnSaveRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:layout_below="@id/editRecipeInstructions"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editRecipeInstructions"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:text="Cancel" />
     </LinearLayout>
 
     <EditText
