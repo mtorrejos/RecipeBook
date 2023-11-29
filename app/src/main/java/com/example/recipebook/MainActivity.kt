@@ -1,6 +1,10 @@
 package com.example.recipebook
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +14,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -30,13 +35,9 @@ open class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val edtUpdate = findViewById<EditText>(R.id.edtUpdateName)
-
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
-
-        recipeView.getRecipes()
 
         dishList = arrayListOf()
 
@@ -45,61 +46,43 @@ open class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //dishRef child counter
         dishRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+            override fun onDataChange(dataSnapshot: DataSnapshot) { //dataSnapshot is pointing to main 'dishes', children are each indiv dish
                 var numberOfChildren = dataSnapshot.childrenCount
+
                 setCount(numberOfChildren)
-                var names: ArrayList<String> = arrayListOf()
 
-                for (childSnapshot in dataSnapshot.children) {
-                    val id = childSnapshot.key // Assuming the key is the ID
-                    names += "$id"
-                    Log.e("dishID", id!!)
+                for (childNode in dataSnapshot.children) {
+                    var childIngredientList: ArrayList<Ingredient>
+                    childIngredientList = arrayListOf()
+                    var ingredientsNode = childNode.child("ingredients")
+
+                    for (ingredientNode in ingredientsNode.children) { //for loop for ingredients
+                        var childIngredient = Ingredient(ingredientNode.value.toString())
+                        childIngredientList.add(childIngredient)
+                    }
+
+                    var bitmappedImage = convertToBitmap(childNode.child("image").value.toString(),60,60)
+
+                   dishList.add(Dish(childNode.child("name").value.toString(), childNode.child("recipe").value.toString(), childIngredientList, bitmappedImage))
+                    recyclerView.adapter = AdapterClass(dishList)
                 }
-
-                setnameList(names)
-                val spnDB = findViewById<Spinner>(R.id.spnDBItems)
-                spnDB.adapter = ArrayAdapter(this@MainActivity,android.R.layout.simple_spinner_dropdown_item, nameList)
 
             }
             override fun onCancelled(databaseError: DatabaseError) { Log.e("Error:", databaseError.message) }
         })
 
-        val spnDB = findViewById<Spinner>(R.id.spnDBItems)
-        spnDB.adapter = ArrayAdapter(this@MainActivity,android.R.layout.simple_spinner_dropdown_item, nameList)
 
-        findViewById<Button>(R.id.btnUpload).setOnClickListener(){
-            uploadData()
-        }
 
-        findViewById<Button>(R.id.btnUpdate).setOnClickListener(){
+        /*findViewById<Button>(R.id.btnUpdate).setOnClickListener(){
             val ingredient = Ingredient("potato, 1kg")
             val tempIng: ArrayList<Ingredient> = arrayListOf(ingredient)
             val dishChildCreate = dishRef.child((spnDB.selectedItem.toString())).ref //get reference to dishID: #
             val updateDishData = Dish(edtUpdate.text.toString(), "recipe", tempIng, null)
             dishChildCreate.setValue(updateDishData)
-        }
+        }*/
     }
 
-fun uploadData() {
-    var ingredients : ArrayList<Ingredient> = arrayListOf()
-    try {
-
-        val testDish = Dish("dishID: "+ (childCount).toString(),"test recipe", ingredients, null) //dish details
-        //val dishChildCreate = dishRef.push() //reference child creation, push() is the function that creates the child
-        //dishChildCreate.child((childCount++).toString()).setValue(testDish) //creates the actual child with specified path and sets the value
-
-        //below is arguably the better way to do it
-        val dishChildCreate = dishRef.child("dishID: " + childCount++.toString()).ref //get reference to dishID: #, which would create the db entry
-        dishChildCreate.setValue(testDish) //actual creation of db entry
-        
-    }
-
-    catch (e:Exception) {
-        Log.e("error", "error")
-    }
-}
 
     private fun setCount(i: Long) { //just sets the child count for the main view
         childCount = i
@@ -107,6 +90,26 @@ fun uploadData() {
 
     private fun setnameList(s: ArrayList<String>) {
         nameList = s
+    }
+
+    private fun convertToBitmap(digits: String, width: Int, height: Int): Bitmap {
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+
+        // Set up Paint for drawing
+        val paint = Paint()
+        paint.color = Color.BLACK
+        paint.textSize = 40f
+
+        // Draw the digits on the canvas
+        canvas.drawText(digits, 0f, height / 2f, paint)
+
+        return bitmap
+    }
+
+    private fun addtoDishList(dish:Dish) {
+        dishList.add(dish)
+
     }
 }
 

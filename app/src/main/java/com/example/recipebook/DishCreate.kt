@@ -107,6 +107,7 @@ class DishCreate() : AppCompatActivity() {
             else {
                 val dishChildCreate = dishRef.child("dishID: " + childCount++.toString()).ref //get reference to dishID: #, which would create the db entry
                 dishChildCreate.setValue(dishToAdd) //actual creation of db entry
+                startActivity(intent)
             }
         }
 
@@ -118,9 +119,6 @@ class DishCreate() : AppCompatActivity() {
     private fun setCount(i: Long) { //just sets the child count for the main view
         childCount = i
     }
-
-
-
 
     private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {

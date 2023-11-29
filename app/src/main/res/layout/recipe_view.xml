@@ -1,31 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@drawable/background">
+    android:layout_height="wrap_content">
+    <LinearLayout
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/titleTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/annie_use_your_telescope"
-        android:gravity="center"
-        android:text="Recipe Delights"
-        android:textStyle="bold"
-        android:textSize="38sp" />
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:id="@+id/mainLinearLayout"
+        android:orientation="vertical">
 
-    <!-- RecyclerView for recipes -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:fontFamily="@font/annie_use_your_telescope"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"/>
+        <!-- Edit Recipe Title -->
+        <TextView
+            android:id="@+id/txtRecipeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipe Title"
+            android:layout_marginBottom="16dp"
+            android:inputType="text"/>
 
-</LinearLayout>
-    //
+        <!-- Edit Recipe Image -->
+        <ImageView
+            android:id="@+id/imgRecipeImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_below="@id/editRecipeTitle"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_launcher_background"/>
+
+        <TextView
+            android:id="@+id/txtRecipeInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="EntRecipe Instructions"
+            android:layout_below="@id/btnAddIngredient"
+            android:layout_marginTop="16dp"
+            android:inputType="textMultiLine"/>
+
+        <TextView
+            android:id="@+id/txtRecipeIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipe Ingredient"
+            android:layout_below="@id/btnPickImage"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>
