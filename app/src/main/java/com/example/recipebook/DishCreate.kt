@@ -29,7 +29,6 @@ class DishCreate() : AppCompatActivity() {
     val dishRef = database.getReference("dishes")
     var childCount: Long = 0
     lateinit var imageActual: ImageView
-    val intent = Intent(this, MainActivity::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
