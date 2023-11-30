@@ -16,7 +16,7 @@
     <EditText
         android:id="@+id/editRecipeTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/annie_use_your_telescope"
         android:hint="Enter Recipe Title"
@@ -76,7 +76,7 @@
     <EditText
         android:id="@+id/editRecipeInstructions"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="Enter Recipe Instructions"
         android:layout_below="@id/btnAddIngredient"
 
@@ -99,7 +99,7 @@
     <EditText
         android:id="@+id/editRecipeIngredients"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="Enter Recipe Ingredient"
         android:layout_below="@id/btnPickImage"
         android:layout_marginTop="16dp" />

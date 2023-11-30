@@ -1,57 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/layoutCard"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_marginVertical="10dp"
+    android:layout_marginHorizontal="10dp">
 
-    <LinearLayout
-        android:id="@+id/layoutConstraint"
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background" />
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:orientation="horizontal">
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp"
+        app:cardBackgroundColor="#7F5239"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp">
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_launcher_background"
-            android:id="@+id/recyclerImage"
-            android:layout_marginStart="20dp"
-            android:padding="8dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/recyclerTitle"
-            android:text="Hello"
-            android:textSize="16dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="50dp"
-            app:layout_constraintStart_toEndOf="@+id/recyclerImage"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="126dp">
 
-        <Button
-            android:id="@+id/editButton"
-            android:layout_width="78dp"
-            android:layout_height="45dp"
-            android:layout_marginEnd="15dp"
-            android:text="Edit"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/deleteButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/recyclerTitle"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.355" />
+            <Button
+                android:id="@+id/editButton"
+                android:layout_width="78dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="161dp"
+                android:layout_marginEnd="15dp"
+                android:backgroundTint="@color/brown"
+                android:fontFamily="@font/annie_use_your_telescope"
+                android:text="Edit"
+                android:textStyle="bold"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toTopOf="@+id/deleteButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/recyclerTitle"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.355" />
+            <Button
+                android:id="@+id/deleteButton"
+                android:layout_width="77dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="161dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="16dp"
+                android:textStyle="bold"
+                android:backgroundTint="@color/brown"
+                android:fontFamily="@font/annie_use_your_telescope"
+                android:text="Delete"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/recyclerTitle" />
+            <ImageView
+                android:id="@+id/recyclerImage"
+                android:layout_width="79dp"
+                android:layout_height="76dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:adjustViewBounds="true"
+                android:padding="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/defaultphoto"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/recyclerTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></ImageView>
 
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/recyclerTitle"
+                android:layout_width="62dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/annie_use_your_telescope"
+                android:text="Recipe"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/recyclerImage"
+                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <Button
+        android:id="@+id/addRecipeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/darkbrown"
+        android:fontFamily="@font/annie_use_your_telescope"
+        android:text="Add Recipe"
+        android:textSize="16sp" />
+
+</RelativeLayout>
