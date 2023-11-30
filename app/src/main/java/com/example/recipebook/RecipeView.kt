@@ -28,6 +28,7 @@ class RecipeView : AppCompatActivity() {
         val childRef = dishRef.child(id)
 
         val recipeName = findViewById<TextView>(R.id.txtRecipeTitle)
+        val recipeInstruct = findViewById<TextView>(R.id.txtRecipeInstructions)
         val image = findViewById<ImageView>(R.id.imgRecipeImage)
         layout = findViewById(R.id.mainLinearLayout)
 
@@ -36,10 +37,13 @@ class RecipeView : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for (child in snapshot.child("ingredients").children) {
-                    addDynamicViewText(child.value.toString())
+                    var cleanedText = child.value.toString().replace("{details=","")
+                    cleanedText = cleanedText.replace("}","")
+                    addDynamicViewText(cleanedText)
                 }
-
                 recipeName.text = snapshot.child("name").value.toString()
+                recipeInstruct.text = snapshot.child("recipe").value.toString()
+
                 //add image
 
             }
