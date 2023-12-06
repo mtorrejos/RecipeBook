@@ -11,8 +11,7 @@
         android:layout_below="@id/btnAddIngredient"
         android:layout_marginTop="16dp"
         android:hint="Enter Recipe Instructions"
-        android:inputType="textMultiLine"
-        android:textStyle="bold" />
+        android:inputType="textMultiLine" />
 
 </LinearLayout>
 

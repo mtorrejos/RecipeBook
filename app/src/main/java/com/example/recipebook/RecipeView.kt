@@ -35,7 +35,6 @@ class RecipeView : AppCompatActivity() {
         val childRef = dishRef.child(id)
 
         val recipeName = findViewById<TextView>(R.id.txtRecipeTitle)
-        val recipeInstruct = findViewById<TextView>(R.id.txtRecipeInstructions)
         val image = findViewById<ImageView>(R.id.imgRecipeImage)
         val backButton = findViewById<Button>(R.id.btnBack)
         layout = findViewById(R.id.mainLinearLayout)
@@ -49,7 +48,7 @@ class RecipeView : AppCompatActivity() {
                     cleanedText = cleanedText.replace("}","")
                     addDynamicViewText(cleanedText,"norm")
                 }
-                addDynamicViewText("Recipe Instructions:","norm")
+                addDynamicViewText("Recipe Instructions:","bold")
                 addDynamicViewInstruc(snapshot.child("recipe").value.toString())
                 recipeName.text = snapshot.child("name").value.toString()
 
