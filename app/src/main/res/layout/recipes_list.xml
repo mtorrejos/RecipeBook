@@ -22,7 +22,7 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/editButton"
+                android:id="@+id/btnEdit"
                 android:layout_width="78dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="161dp"
@@ -32,28 +32,30 @@
                 android:text="Edit"
                 android:textStyle="bold"
                 android:textSize="11sp"
-                app:layout_constraintBottom_toTopOf="@+id/deleteButton"
+                app:layout_constraintBottom_toTopOf="@+id/btnDelete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/recyclerTitle"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.355" />
+
             <Button
-                android:id="@+id/deleteButton"
+                android:id="@+id/btnDelete"
                 android:layout_width="77dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="161dp"
                 android:layout_marginEnd="15dp"
-                android:layout_marginBottom="16dp"
-                android:textStyle="bold"
+                android:layout_marginBottom="4dp"
                 android:backgroundTint="@color/brown"
                 android:fontFamily="@font/annie_use_your_telescope"
                 android:text="Delete"
                 android:textSize="11sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/recyclerTitle" />
+
             <ImageView
                 android:id="@+id/recyclerImage"
                 android:layout_width="79dp"

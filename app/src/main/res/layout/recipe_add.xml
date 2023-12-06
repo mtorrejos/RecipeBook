@@ -31,7 +31,7 @@
         android:scaleType="centerCrop"
         android:layout_below="@id/editRecipeTitle"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_launcher_background"/>
+        android:src="@drawable/defaultphoto"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -46,7 +46,8 @@
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/darkbrown"
             android:fontFamily="@font/langar"
-            android:text="Pick/Edit Image" />
+            android:text="Pick/Edit Image"
+            android:visibility="invisible"/>
 
         <!-- Save Button -->
         <Button

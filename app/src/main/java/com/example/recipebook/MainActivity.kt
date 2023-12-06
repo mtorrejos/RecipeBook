@@ -8,13 +8,10 @@ import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -38,6 +35,7 @@ open class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
+
 
         dishList = arrayListOf()
 
@@ -72,15 +70,6 @@ open class MainActivity : AppCompatActivity() {
             override fun onCancelled(databaseError: DatabaseError) { Log.e("Error:", databaseError.message) }
         })
 
-
-
-        /*findViewById<Button>(R.id.btnUpdate).setOnClickListener(){
-            val ingredient = Ingredient("potato, 1kg")
-            val tempIng: ArrayList<Ingredient> = arrayListOf(ingredient)
-            val dishChildCreate = dishRef.child((spnDB.selectedItem.toString())).ref //get reference to dishID: #
-            val updateDishData = Dish(edtUpdate.text.toString(), "recipe", tempIng, null)
-            dishChildCreate.setValue(updateDishData)
-        }*/
     }
 
 
@@ -88,15 +77,12 @@ open class MainActivity : AppCompatActivity() {
         childCount = i
     }
 
-    private fun setnameList(s: ArrayList<String>) {
-        nameList = s
-    }
-
     private fun convertToBitmap(digits: String, width: Int, height: Int): Bitmap {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
         // Set up Paint for drawing
+
         val paint = Paint()
         paint.color = Color.BLACK
         paint.textSize = 40f
@@ -105,12 +91,11 @@ open class MainActivity : AppCompatActivity() {
         canvas.drawText(digits, 0f, height / 2f, paint)
 
         return bitmap
-    }
+    } //bruh i can't get this to work, might scrap
 
-    private fun addtoDishList(dish:Dish) {
-        dishList.add(dish)
-
-    }
+    fun setBitmapToImageView(bitmap: Bitmap, imageView: ImageView) {
+        imageView.setImageBitmap(bitmap)
+    } //i am about to scrap this completely
 }
 
 

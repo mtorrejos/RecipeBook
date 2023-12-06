@@ -15,13 +15,21 @@
 
 
     <LinearLayout
-
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
         android:id="@+id/mainLinearLayout"
         android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editRecipeImage"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/darkbrown"
+            android:fontFamily="@font/langar"
+            android:text="Back" />
 
         <!-- Edit Recipe Title -->
         <TextView
@@ -35,14 +43,16 @@
             android:textSize="38sp" />
 
         <!-- Edit Recipe Image -->
+
         <ImageView
             android:id="@+id/imgRecipeImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
             android:layout_below="@id/editRecipeTitle"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/ic_launcher_background"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/defaultphoto"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/txtRecipeInstructions"
@@ -52,15 +62,6 @@
             android:layout_marginTop="16dp"
             android:hint="Enter Recipe Instructions"
             android:inputType="textMultiLine"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtRecipeIngredient"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_below="@id/btnPickImage"
-            android:layout_marginTop="16dp"
-            android:hint="Recipe Ingredient"
             android:textStyle="bold" />
 
     </LinearLayout>
