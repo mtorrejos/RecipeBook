@@ -77,13 +77,13 @@
     <EditText
         android:id="@+id/editRecipeInstructions"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:hint="Enter Recipe Instructions"
         android:layout_below="@id/btnAddIngredient"
-
+        android:maxLines="10"
         android:textStyle="bold"
         android:layout_marginTop="16dp"
-        android:inputType="textMultiLine"/>
+        android:inputType="textCapSentences|textMultiLine"/>
 
     <Button
         android:id="@+id/btnAddIngredient"
@@ -95,15 +95,16 @@
         android:fontFamily="@font/langar"
         android:text="Add Ingredient" />
 
-
-
     <EditText
         android:id="@+id/editRecipeIngredients"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:hint="Enter Recipe Ingredient"
         android:layout_below="@id/btnPickImage"
-        android:layout_marginTop="16dp" />
+        android:maxLines="1"
+        android:lines="1"
+        android:layout_marginTop="16dp"
+        android:inputType="text"/>
 
 
 

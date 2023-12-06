@@ -11,6 +11,9 @@
         android:layout_height="wrap_content"
         android:hint="Enter Recipe Ingredient"
         android:layout_marginTop="16dp"
+        android:maxLines="1"
+        android:inputType="text"
+
         />
 
 </LinearLayout>
