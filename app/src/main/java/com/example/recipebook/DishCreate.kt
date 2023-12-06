@@ -44,7 +44,6 @@ class DishCreate() : AppCompatActivity() {
 
         var editExtras = intent.extras
         var editPosition = editExtras?.getString("id")
-        castTo(editPosition.toString())
         Log.e("editpos1",editPosition.toString())
 
 
@@ -84,7 +83,7 @@ class DishCreate() : AppCompatActivity() {
                     var ingredients: ArrayList<Ingredient> = arrayListOf()
                     val recipeTitle = findViewById<EditText>(R.id.editRecipeTitle)
                     val recipeInstruct = findViewById<EditText>(R.id.editRecipeInstructions)
-                    id = editPosition
+                    castTo(editPosition.toString())
                     //val dataSnapshot = database.getReference("dishes")
 
                     Log.e("editpos", editPosition)
@@ -160,20 +159,28 @@ class DishCreate() : AppCompatActivity() {
             else
                 cont = true
 
-            if((id == "") && cont) {
+            if(!(id == "") && cont) {
                 val dishChildCreate = dishRef.child(id) //get reference to dishID: #, which would create the db entry
-                dishChildCreate.setValue(dishToAdd) //actual creation of db entry
+                dishChildCreate.child("ingredients").removeValue()
 
-                for(item in ingredients) {
-                    ingredients.remove(item)
+                ingredients.clear()
+
+                for (i in ingrTextBoxes) {
+                    val ingredientText = Ingredient(i.text.toString())
+                    if (!i.text.toString().isNullOrBlank())
+                        ingredients.add(ingredientText)
                 }
 
+                val dishToAdd = Dish(recipeTitle.text.toString(),recipeInstruct.text.toString(), ingredients, null) //dish details
+
+
+                dishChildCreate.setValue(dishToAdd) //actual creation of db entry
                 startActivity(intent)
 
             }
 
 
-            else if(!(id == "") && cont) {
+            else if((id == "") && cont) {
                 val dishChildCreate = dishRef.child("dishID: " + childCount++.toString()) //get reference to dishID: #, which would create the db entry
                 dishChildCreate.setValue(dishToAdd) //actual creation of db entry
                 startActivity(intent)
