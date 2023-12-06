@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -46,10 +47,11 @@ class RecipeView : AppCompatActivity() {
                 for (child in snapshot.child("ingredients").children) {
                     var cleanedText = child.value.toString().replace("{details=","")
                     cleanedText = cleanedText.replace("}","")
-                    addDynamicViewText(cleanedText)
+                    addDynamicViewText(cleanedText,"norm")
                 }
+                addDynamicViewText("Recipe Instructions:","norm")
+                addDynamicViewInstruc(snapshot.child("recipe").value.toString())
                 recipeName.text = snapshot.child("name").value.toString()
-                recipeInstruct.text = snapshot.child("recipe").value.toString()
 
                 var digits = snapshot.child("image").value.toString()
                 var bitmap = convertToBitmap(digits, 180, 180)
@@ -65,18 +67,29 @@ class RecipeView : AppCompatActivity() {
 
         backButton.setOnClickListener() {
         val back = Intent(this, MainActivity::class.java)
-            startActivity(back)
+        startActivity(back)
         }
 
 
     }
-    private fun addDynamicViewText(string: String) {
+    private fun addDynamicViewText(string: String,style: String) {
         val dynamicViewTextLayout = LayoutInflater.from(this).inflate(R.layout.dynamic_view_text, null)
         val textView = dynamicViewTextLayout.findViewById<TextView>(R.id.txtRecipeIngredient)
 
         layout.addView(dynamicViewTextLayout)
         textView.text = string
 
+        if(style == "bold")
+            textView.setTypeface(Typeface.DEFAULT_BOLD)
+    }
+
+
+    private fun addDynamicViewInstruc(string: String) {
+        val dynamicViewTextLayout = LayoutInflater.from(this).inflate(R.layout.dynamic_instruct, null)
+        val textView = dynamicViewTextLayout.findViewById<TextView>(R.id.txtRecipeInstructions)
+
+        layout.addView(dynamicViewTextLayout)
+        textView.text = string
     }
 
     private fun convertToBitmap(digits: String, width: Int, height: Int): Bitmap {
