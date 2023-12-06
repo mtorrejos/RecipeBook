@@ -46,9 +46,9 @@ open class MainActivity : AppCompatActivity() {
 
         dishRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) { //dataSnapshot is pointing to main 'dishes', children are each indiv dish
-                var numberOfChildren = dataSnapshot.childrenCount
+               // var numberOfChildren = dataSnapshot.childrenCount
 
-                setCount(numberOfChildren)
+               // setCount(numberOfChildren)
 
                 for (childNode in dataSnapshot.children) {
                     var childIngredientList: ArrayList<Ingredient>
@@ -61,9 +61,12 @@ open class MainActivity : AppCompatActivity() {
                     }
 
                     var bitmappedImage = convertToBitmap(childNode.child("image").value.toString(),60,60)
+                    if(childNode.child("hidden").value.toString().toBoolean())
+                        continue
 
-                   dishList.add(Dish(childNode.child("name").value.toString(), childNode.child("recipe").value.toString(), childIngredientList, bitmappedImage))
-                    recyclerView.adapter = AdapterClass(dishList)
+                    else {
+                   dishList.add(Dish(childNode.child("name").value.toString(), childNode.child("recipe").value.toString(), childIngredientList, childNode.child("hidden").value.toString().toBoolean()))
+                    recyclerView.adapter = AdapterClass(dishList) }
                 }
 
             }

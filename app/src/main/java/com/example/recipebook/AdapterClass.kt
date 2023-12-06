@@ -32,6 +32,7 @@ class AdapterClass(var dishList : ArrayList<Dish>) : RecyclerView.Adapter<Adapte
         var currentItems = dishList[position]
         var editButton = holder.itemView.findViewById<Button>(R.id.btnEdit)
         var deleteButton = holder.itemView.findViewById<Button>(R.id.btnDelete)
+
         holder.title.text = currentItems.name
 
         holder.itemView.setOnClickListener {
@@ -53,8 +54,10 @@ class AdapterClass(var dishList : ArrayList<Dish>) : RecyclerView.Adapter<Adapte
             val id = "dishID: $position"
             val database = Firebase.database(DatabaseConnect().connection)
             val dishRef = database.getReference("dishes")
+            dishRef.child(id).child("hidden").setValue(true)
 
-            dishRef.child(id).removeValue()
+            //dishRef.child(id).removeValue()
+
 
             holder.itemView.context.startActivity(delete)
         }

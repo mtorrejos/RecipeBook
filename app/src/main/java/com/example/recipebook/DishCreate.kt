@@ -149,7 +149,7 @@ class DishCreate() : AppCompatActivity() {
             var imageBitmap = imageViewToBitmap(imageView)
            // var imageDigits = convertToDigits(imageBitmap)
 
-            val dishToAdd = Dish(recipeTitle.text.toString(),recipeInstruct.text.toString(), ingredients, null) //dish details
+            val dishToAdd = Dish(recipeTitle.text.toString(),recipeInstruct.text.toString(), ingredients, false) //dish details
             var cont: Boolean
 
             if(recipeTitle.text.toString().isNullOrBlank() || recipeInstruct.text.toString().isNullOrBlank() || firstIngredient.text.toString().isNullOrBlank()) {
@@ -171,7 +171,7 @@ class DishCreate() : AppCompatActivity() {
                         ingredients.add(ingredientText)
                 }
 
-                val dishToAdd = Dish(recipeTitle.text.toString(),recipeInstruct.text.toString(), ingredients, null) //dish details
+                val dishToAdd = Dish(recipeTitle.text.toString(),recipeInstruct.text.toString(), ingredients, false) //dish details
 
 
                 dishChildCreate.setValue(dishToAdd) //actual creation of db entry
