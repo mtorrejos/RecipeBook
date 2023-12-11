@@ -61,7 +61,6 @@
             android:layout_below="@id/btnAddIngredient"
             android:layout_marginTop="16dp"
             android:text="Recipe Ingredients:"
-            android:fontFamily="@font/langar"
             android:inputType="text"
             android:textStyle="bold"/>
 
