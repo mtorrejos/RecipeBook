@@ -71,7 +71,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:text="Cancel" />
+            android:text="Back" />
     </LinearLayout>
 
     <EditText
@@ -80,8 +80,9 @@
         android:layout_height="wrap_content"
         android:hint="Enter Recipe Instructions"
         android:layout_below="@id/btnAddIngredient"
-        android:maxLines="10"
+        android:fontFamily="@font/annie_use_your_telescope"
         android:textStyle="bold"
+        android:maxLines="10"
         android:layout_marginTop="16dp"
         android:inputType="textCapSentences|textMultiLine"/>
 
@@ -100,6 +101,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Recipe Ingredient"
+        android:fontFamily="@font/annie_use_your_telescope"
+        android:textStyle="bold"
         android:layout_below="@id/btnPickImage"
         android:maxLines="1"
         android:lines="1"
