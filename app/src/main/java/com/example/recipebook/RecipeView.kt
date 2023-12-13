@@ -18,9 +18,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.sql.Ref
 
 class RecipeView : AppCompatActivity() {
     private lateinit var layout: LinearLayout
@@ -28,11 +30,12 @@ class RecipeView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.recipe_view)
 
-        val id = intent.getStringExtra("id").toString()
+        val name = intent.getStringExtra("name").toString()
 
         val database = Firebase.database(DatabaseConnect().connection)
         val dishRef = database.getReference("dishes")
-        val childRef = dishRef.child(id)
+
+        //var childRef: DatabaseReference = getNameRef(dishRef, name)
 
         val recipeName = findViewById<TextView>(R.id.txtRecipeTitle)
         val image = findViewById<ImageView>(R.id.imgRecipeImage)
@@ -40,35 +43,37 @@ class RecipeView : AppCompatActivity() {
         layout = findViewById(R.id.mainLinearLayout)
 
 
-        childRef.addListenerForSingleValueEvent(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
+        getNameRef(dishRef, name) { resultRef ->
+            resultRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.e("childRefAddListener", resultRef.toString())
+                    for (child in snapshot.child("ingredients").children) {
 
-                for (child in snapshot.child("ingredients").children) {
-                    var cleanedText = child.value.toString().replace("{details=","")
-                    cleanedText = cleanedText.replace("}","")
-                    addDynamicViewText(cleanedText,"norm")
+                        var cleanedText = child.value.toString().replace("{details=", "")
+                        cleanedText = cleanedText.replace("}", "")
+                        addDynamicViewText(cleanedText, "norm")
+                    }
+                    addDynamicViewText("Recipe Instructions:", "bold")
+                    addDynamicViewInstruc(snapshot.child("recipe").value.toString())
+                    recipeName.text = snapshot.child("name").value.toString()
+
+                    var digits = snapshot.child("image").value.toString()
+                    var bitmap = convertToBitmap(digits, 180, 180)
+                    //image.setImageBitmap(bitmap)
+
                 }
-                addDynamicViewText("Recipe Instructions:","bold")
-                addDynamicViewInstruc(snapshot.child("recipe").value.toString())
-                recipeName.text = snapshot.child("name").value.toString()
 
-                var digits = snapshot.child("image").value.toString()
-                var bitmap = convertToBitmap(digits, 180, 180)
-                //image.setImageBitmap(bitmap)
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("view", "error")
+                }
 
+            })
+
+            backButton.setOnClickListener() {
+                val back = Intent(this, MainActivity::class.java)
+                startActivity(back)
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("view", "error")
-            }
-
-        })
-
-        backButton.setOnClickListener() {
-        val back = Intent(this, MainActivity::class.java)
-        startActivity(back)
         }
-
 
     }
     private fun addDynamicViewText(string: String,style: String) {
@@ -109,4 +114,33 @@ class RecipeView : AppCompatActivity() {
     private fun setBitmapToImageView(bitmap: Bitmap, imageView: ImageView) {
         imageView.setImageBitmap(bitmap)
     } //dead
+}
+
+
+
+private fun getNameRef(dishRef: DatabaseReference, name: String, callback: (DatabaseReference) -> Unit) {
+    dishRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(namesnapshot: DataSnapshot) {
+            for (child in namesnapshot.children) {
+                if (child.child("name").value.toString() == name) {
+                    val nameRef = child.ref
+                    Log.e("changedchildRef", nameRef.toString())
+                    Log.e("dishRef", dishRef.toString())
+                    Log.e("name", name)
+                    Log.e("childRefChild", child.child("name").value.toString())
+                    callback(nameRef)
+                    return
+                }
+            }
+
+            callback(dishRef)
+
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+
+        }
+    })
+
+    return
 }

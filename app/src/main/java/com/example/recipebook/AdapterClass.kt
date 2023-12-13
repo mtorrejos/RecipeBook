@@ -1,6 +1,7 @@
 package com.example.recipebook
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -15,7 +20,6 @@ class AdapterClass(var dishList : ArrayList<Dish>) : RecyclerView.Adapter<Adapte
 
     class ViewHolderClass(var recipeView: View) : RecyclerView.ViewHolder(recipeView) {
         val title: TextView = recipeView.findViewById(R.id.recyclerTitle)
-        val image: ImageView = recipeView.findViewById(R.id.recyclerImage)
     }
 
 
@@ -37,7 +41,7 @@ class AdapterClass(var dishList : ArrayList<Dish>) : RecyclerView.Adapter<Adapte
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, RecipeView::class.java)
-            intent.putExtra("id", "dishID: $position")
+            intent.putExtra("name", currentItems.name)
             holder.itemView.context.startActivity(intent)
         }
 
@@ -45,21 +49,20 @@ class AdapterClass(var dishList : ArrayList<Dish>) : RecyclerView.Adapter<Adapte
 
         editButton.setOnClickListener() {
             val edit = Intent(holder.itemView.context, DishCreate::class.java)
-            edit.putExtra("id", "dishID: $position")
+            edit.putExtra("name", currentItems.name)
             holder.itemView.context.startActivity(edit)
         }
 
         deleteButton.setOnClickListener() {
             val delete = Intent(holder.itemView.context, MainActivity::class.java)
-            val id = "dishID: $position"
+            val name = currentItems.name
             val database = Firebase.database(DatabaseConnect().connection)
             val dishRef = database.getReference("dishes")
-            dishRef.child(id).child("hidden").setValue(true)
 
+            getNameRef(dishRef, name) { resultRef ->
+           resultRef.child("hidden").setValue(true)
             //dishRef.child(id).removeValue()
-
-
-            holder.itemView.context.startActivity(delete)
+            holder.itemView.context.startActivity(delete) }
         }
 
     }
@@ -71,5 +74,32 @@ class AdapterClass(var dishList : ArrayList<Dish>) : RecyclerView.Adapter<Adapte
 
     private fun deleteItem(string: String) {
 
+    }
+
+    private fun getNameRef(dishRef: DatabaseReference, name: String, callback: (DatabaseReference) -> Unit) {
+        dishRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(namesnapshot: DataSnapshot) {
+                for (child in namesnapshot.children) {
+                    if (child.child("name").value.toString() == name) {
+                        val nameRef = child.ref
+                        Log.e("changedchildRef", nameRef.toString())
+                        Log.e("dishRef", dishRef.toString())
+                        Log.e("name", name)
+                        Log.e("childRefChild", child.child("name").value.toString())
+                        callback(nameRef)
+                        return
+                    }
+                }
+
+                callback(dishRef)
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
+        return
     }
 }

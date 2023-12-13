@@ -43,7 +43,7 @@ class DishCreate() : AppCompatActivity() {
         val cancelButton = findViewById<Button>(R.id.btnCancel)
 
         var editExtras = intent.extras
-        var editPosition = editExtras?.getString("id")
+        var editPosition = editExtras?.getString("name")
         Log.e("editpos1",editPosition.toString())
 
 

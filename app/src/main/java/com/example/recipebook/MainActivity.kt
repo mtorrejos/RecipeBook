@@ -36,7 +36,6 @@ open class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-
         dishList = arrayListOf()
 
         findViewById<Button>(R.id.btnMove).setOnClickListener(){
@@ -51,8 +50,7 @@ open class MainActivity : AppCompatActivity() {
                // setCount(numberOfChildren)
 
                 for (childNode in dataSnapshot.children) {
-                    var childIngredientList: ArrayList<Ingredient>
-                    childIngredientList = arrayListOf()
+                    var childIngredientList: ArrayList<Ingredient> = arrayListOf()
                     var ingredientsNode = childNode.child("ingredients")
 
                     for (ingredientNode in ingredientsNode.children) { //for loop for ingredients
@@ -60,7 +58,6 @@ open class MainActivity : AppCompatActivity() {
                         childIngredientList.add(childIngredient)
                     }
 
-                    var bitmappedImage = convertToBitmap(childNode.child("image").value.toString(),60,60)
                     if(childNode.child("hidden").value.toString().toBoolean())
                         continue
 

@@ -51,7 +51,6 @@
                 android:text="Delete"
                 android:textSize="11sp"
                 android:textStyle="bold"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
