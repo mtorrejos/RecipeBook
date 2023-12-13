@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
 
 open class MainActivity : AppCompatActivity() {
 
@@ -62,7 +63,12 @@ open class MainActivity : AppCompatActivity() {
                         continue
 
                     else {
-                   dishList.add(Dish(childNode.child("name").value.toString(), childNode.child("recipe").value.toString(), childIngredientList, childNode.child("hidden").value.toString().toBoolean()))
+                   dishList.add(Dish(
+                       childNode.child("name").value.toString(),
+                       childNode.child("recipe").value.toString(),
+                       childIngredientList,
+                       childNode.child("hidden").value.toString().toBoolean()
+                   ))
                     recyclerView.adapter = AdapterClass(dishList) }
                 }
 

@@ -72,11 +72,6 @@ class AdapterClass(var dishList : ArrayList<Dish>) : RecyclerView.Adapter<Adapte
         return dishList.size
     }
 
-
-    private fun deleteItem(string: String) {
-
-    }
-
     private fun getNameRef(dishRef: DatabaseReference, name: String, callback: (DatabaseReference) -> Unit) {
         dishRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(namesnapshot: DataSnapshot) {

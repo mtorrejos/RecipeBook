@@ -2,16 +2,16 @@ package com.example.recipebook
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -22,7 +22,12 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.sql.Ref
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
+
 
 class RecipeView : AppCompatActivity() {
     private lateinit var layout: LinearLayout
@@ -57,9 +62,15 @@ class RecipeView : AppCompatActivity() {
                     addDynamicViewInstruc(snapshot.child("recipe").value.toString())
                     recipeName.text = snapshot.child("name").value.toString()
 
-                    var digits = snapshot.child("image").value.toString()
-                    var bitmap = convertToBitmap(digits, 180, 180)
-                    //image.setImageBitmap(bitmap)
+                    val storage = Firebase.storage.reference
+                    val imageRef = storage.child(name)
+
+                    val buffer = (1024*1024)
+                    imageRef.getBytes(buffer.toLong()).addOnSuccessListener {
+                        val bitmap = BitmapFactory.decodeByteArray(it,0,it.size)
+                        image.setImageBitmap(bitmap)
+                        Log.i("imageRefSuccess", imageRef.toString())
+                    }
 
                 }
 

@@ -1,7 +1,12 @@
 package com.example.recipebook
 
-import android.graphics.Bitmap
+import com.google.firebase.storage.StorageReference
 
-data class Dish(var name: String, var recipe: String, var ingredients: ArrayList<Ingredient>, var hidden: Boolean) {
+data class Dish(
+    var name: String,
+    var recipe: String,
+    var ingredients: ArrayList<Ingredient>,
+    var hidden: Boolean
+) {
 
 }

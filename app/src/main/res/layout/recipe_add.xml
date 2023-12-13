@@ -47,7 +47,7 @@
             android:backgroundTint="@color/darkbrown"
             android:fontFamily="@font/langar"
             android:text="Pick/Edit Image"
-            android:visibility="invisible"/>
+            />
 
         <!-- Save Button -->
         <Button

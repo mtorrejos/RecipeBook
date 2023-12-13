@@ -3,7 +3,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
@@ -22,6 +21,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 
 
 class DishCreate() : AppCompatActivity() {
@@ -144,10 +146,15 @@ class DishCreate() : AppCompatActivity() {
     }
 
     private fun addRecipe(ingrTextBoxes: ArrayList<EditText>) {
+
         val firstIngredient = findViewById<EditText>(R.id.editRecipeIngredients)
         var ingredients : ArrayList<Ingredient> = arrayListOf()
         val recipeTitle = findViewById<EditText>(R.id.editRecipeTitle)
         val recipeInstruct = findViewById<EditText>(R.id.editRecipeInstructions)
+
+        val storage = Firebase.storage.reference
+        val imageRef = storage.child(recipeTitle.text.toString())
+
         ingredients.add(Ingredient(firstIngredient.text.toString()))
         for (i in ingrTextBoxes) {
             val ingredientText = Ingredient(i.text.toString())
@@ -157,57 +164,31 @@ class DishCreate() : AppCompatActivity() {
 
         try {
             imageView = findViewById(R.id.editRecipeImage)
-            var imageBitmap = imageViewToBitmap(imageView)
+
+            imageView.isDrawingCacheEnabled = true
+            imageView.buildDrawingCache()
+            val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+
+            var uploadTask = imageRef.putBytes(data)
+            uploadTask.addOnFailureListener {
+                Log.i("uploaderror", it.toString())
+            }.addOnSuccessListener { taskSnapshot ->
+                sendToDatabase(recipeTitle,firstIngredient,recipeInstruct,ingredients,imageRef)
+
+            }
+
            // var imageDigits = convertToDigits(imageBitmap)
 
-            val dishToAdd = Dish(recipeTitle.text.toString(),recipeInstruct.text.toString(), ingredients, false) //dish details
-
-            if(recipeTitle.text.toString().isNullOrBlank() || recipeInstruct.text.toString().isNullOrBlank() || firstIngredient.text.toString().isNullOrBlank()) {
-                Toast.makeText(this,"Please fill in all the required fields.",Toast.LENGTH_SHORT).show()
-            }
-            else {
-                if (id) {
-
-                    var editExtras = intent.extras
-                    val name = editExtras!!.getString("name")
-
-                    getNameRef(dishRef, name!!) { resultRef->
-
-                        resultRef.child("ingredients").removeValue()
-                        ingredients.clear()
-                        for (i in ingrTextBoxes) {
-                            val ingredientText = Ingredient(i.text.toString())
-                            if (!i.text.toString().isNullOrBlank())
-                                ingredients.add(ingredientText)
-                        }
-
-                        val dishToAdd = Dish(
-                            recipeTitle.text.toString(),
-                            recipeInstruct.text.toString(),
-                            ingredients,
-                            false
-                        ) //dish details
+            Log.i("after image upload","hello")
 
 
-                        resultRef.setValue(dishToAdd) //actual creation of db entry
-                        startActivity(intent)
-
-                    }
-
-
-                }
-
-                else {
-                    val dishChildCreate =
-                        dishRef.child("dishID: " + childCount++.toString()) //get reference to dishID: #, which would create the db entry
-                    dishChildCreate.setValue(dishToAdd) //actual creation of db entry
-                    startActivity(intent)
-                }
-            }
         }
 
         catch (e:Exception) {
-           Log.e("error", e.toString())
+           Log.e("error", e.printStackTrace().toString())
         }
     }
 
@@ -228,28 +209,58 @@ class DishCreate() : AppCompatActivity() {
         getContent.launch(intent)
     }
 
-    private fun imageViewToBitmap(imageView: ImageView): Bitmap { //dead inside
-        val drawable = imageView.drawable
-        if (drawable is BitmapDrawable) {
-            // If the ImageView has a BitmapDrawable, get its Bitmap
-            return drawable.bitmap
-        }
-
-        // If the ImageView doesn't have a BitmapDrawable, create a new Bitmap
-        val bitmap = Bitmap.createBitmap(
-            imageView.width,
-            imageView.height,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        drawable.draw(canvas)
-        return bitmap
-    }
-
 
     private fun castTo(setter: Boolean, dishRef: DatabaseReference) {
         id = setter
 
+    }
+
+
+    private fun sendToDatabase(recipeTitle: EditText, firstIngredient: EditText, recipeInstruct: EditText, ingredients: ArrayList<Ingredient>, imageRef: StorageReference) {
+        val dishToAdd = Dish(recipeTitle.text.toString(),recipeInstruct.text.toString(), ingredients, false) //dish details
+
+        if(recipeTitle.text.toString().isNullOrBlank() || recipeInstruct.text.toString().isNullOrBlank() || firstIngredient.text.toString().isNullOrBlank()) {
+            Toast.makeText(this,"Please fill in all the required fields.",Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Log.i("dishtoadd", "dishdetails")
+                if (id) {
+
+                    var editExtras = intent.extras
+                    val name = editExtras!!.getString("name")
+
+
+                    getNameRef(dishRef, name!!) { resultRef ->
+
+                        resultRef.child("ingredients").removeValue()
+                        ingredients.clear()
+                        for (i in ingrTextBoxes) {
+                            val ingredientText = Ingredient(i.text.toString())
+                            if (!i.text.toString().isNullOrBlank())
+                                ingredients.add(ingredientText)
+                        }
+
+                        val dishToAdd = Dish(
+                            recipeTitle.text.toString(),
+                            recipeInstruct.text.toString(),
+                            ingredients,
+                            false
+                        ) //dish details
+
+                        resultRef.setValue(dishToAdd) //actual creation of db entry
+                        startActivity(intent)
+
+                    }
+
+
+                } else {
+                    val dishChildCreate =
+                        dishRef.child("dishID: " + childCount++.toString()) //get reference to dishID: #, which would create the db entry
+                    dishChildCreate.setValue(dishToAdd) //actual creation of db entry
+                    startActivity(intent)
+                }
+
+        }
     }
 
 }
