@@ -118,7 +118,7 @@ class RecipeView : AppCompatActivity() {
 
 
 
-private fun getNameRef(dishRef: DatabaseReference, name: String, callback: (DatabaseReference) -> Unit) {
+internal fun getNameRef(dishRef: DatabaseReference, name: String, callback: (DatabaseReference) -> Unit) {
     dishRef.addListenerForSingleValueEvent(object : ValueEventListener {
         override fun onDataChange(namesnapshot: DataSnapshot) {
             for (child in namesnapshot.children) {

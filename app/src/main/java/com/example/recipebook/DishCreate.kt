@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -32,7 +33,7 @@ class DishCreate() : AppCompatActivity() {
     val dishRef = database.getReference("dishes")
     var childCount: Long = 0
     lateinit var imageActual: ImageView
-    var id: String = ""
+    var id: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.recipe_add)
@@ -80,25 +81,33 @@ class DishCreate() : AppCompatActivity() {
 
                 if (!editPosition.isNullOrBlank()) {
                     val firstIngredient = findViewById<EditText>(R.id.editRecipeIngredients)
-                    var ingredients: ArrayList<Ingredient> = arrayListOf()
+                    var ingredients: ArrayList<String> = arrayListOf()
                     val recipeTitle = findViewById<EditText>(R.id.editRecipeTitle)
                     val recipeInstruct = findViewById<EditText>(R.id.editRecipeInstructions)
-                    castTo(editPosition.toString())
                     //val dataSnapshot = database.getReference("dishes")
 
                     Log.e("editpos", editPosition)
+                    val editing = editExtras?.getBoolean("editing")
+                    castTo(editing!!, dishRef)
 
-                    for (key in dataSnapshot.children) {
-                        if (key.key == editPosition) {
+                    for (child in dataSnapshot.children) {
+                        if (child.child("name").value.toString() == editPosition) {
                             layout.removeView(firstIngredient)
-                            for (child in key.child("ingredients").children) {
-                                var cleanedText = child.value.toString().replace("{details=", "")
+                            for (ingredient in child.child("ingredients").children) {
+                                Log.i("ingredient Text", ingredient.value.toString())
+                                var cleanedText = ingredient.value.toString().replace("{details=", "")
                                 cleanedText = cleanedText.replace("}", "")
-                                addDynamicEditTextEdit(cleanedText)
+                                cleanedText = cleanedText.replace("[", "")
+                                cleanedText = cleanedText.replace("]", "")
+
+                                ingredients.add(cleanedText)
+                                Log.i("ingredient array Text", ingredients.toString())
+
                             }
 
-                            recipeTitle.setText(key.child("name").value.toString())
-                            recipeInstruct.setText(key.child("recipe").value.toString())
+                            addDynamicEditTextEdit(ingredients)
+                            recipeTitle.setText(child.child("name").value.toString())
+                            recipeInstruct.setText(child.child("recipe").value.toString())
                         }
                     }
                 }
@@ -122,14 +131,16 @@ class DishCreate() : AppCompatActivity() {
             Log.e("Ingre",i.toString())
     }
 
-    private fun addDynamicEditTextEdit(string: String) {
-        val dynamicEditTextLayout = LayoutInflater.from(this).inflate(R.layout.dynamic_text, null)
-        val editText = dynamicEditTextLayout.findViewById<EditText>(R.id.editRecipeIngredients)
+    private fun addDynamicEditTextEdit(array: ArrayList<String>) {
 
-        layout.addView(dynamicEditTextLayout)
-        ingrTextBoxes.add(editText)
-        editText.setText(string)
+        for(item in array) {
+            val dynamicEditTextLayout = LayoutInflater.from(this).inflate(R.layout.dynamic_text, null)
+            val editText = dynamicEditTextLayout.findViewById<EditText>(R.id.editRecipeIngredients)
 
+            layout.addView(dynamicEditTextLayout)
+            ingrTextBoxes.add(editText)
+            editText.setText(item)
+        }
     }
 
     private fun addRecipe(ingrTextBoxes: ArrayList<EditText>) {
@@ -150,42 +161,49 @@ class DishCreate() : AppCompatActivity() {
            // var imageDigits = convertToDigits(imageBitmap)
 
             val dishToAdd = Dish(recipeTitle.text.toString(),recipeInstruct.text.toString(), ingredients, false) //dish details
-            var cont: Boolean
 
             if(recipeTitle.text.toString().isNullOrBlank() || recipeInstruct.text.toString().isNullOrBlank() || firstIngredient.text.toString().isNullOrBlank()) {
                 Toast.makeText(this,"Please fill in all the required fields.",Toast.LENGTH_SHORT).show()
-                cont = false
             }
-            else
-                cont = true
+            else {
+                if (id) {
 
-            if(!(id == "") && cont) {
-                val dishChildCreate = dishRef.child(id) //get reference to dishID: #, which would create the db entry
-                dishChildCreate.child("ingredients").removeValue()
+                    var editExtras = intent.extras
+                    val name = editExtras!!.getString("name")
 
-                ingredients.clear()
+                    getNameRef(dishRef, name!!) { resultRef->
 
-                for (i in ingrTextBoxes) {
-                    val ingredientText = Ingredient(i.text.toString())
-                    if (!i.text.toString().isNullOrBlank())
-                        ingredients.add(ingredientText)
+                        resultRef.child("ingredients").removeValue()
+                        ingredients.clear()
+                        for (i in ingrTextBoxes) {
+                            val ingredientText = Ingredient(i.text.toString())
+                            if (!i.text.toString().isNullOrBlank())
+                                ingredients.add(ingredientText)
+                        }
+
+                        val dishToAdd = Dish(
+                            recipeTitle.text.toString(),
+                            recipeInstruct.text.toString(),
+                            ingredients,
+                            false
+                        ) //dish details
+
+
+                        resultRef.setValue(dishToAdd) //actual creation of db entry
+                        startActivity(intent)
+
+                    }
+
+
                 }
 
-                val dishToAdd = Dish(recipeTitle.text.toString(),recipeInstruct.text.toString(), ingredients, false) //dish details
-
-
-                dishChildCreate.setValue(dishToAdd) //actual creation of db entry
-                startActivity(intent)
-
+                else {
+                    val dishChildCreate =
+                        dishRef.child("dishID: " + childCount++.toString()) //get reference to dishID: #, which would create the db entry
+                    dishChildCreate.setValue(dishToAdd) //actual creation of db entry
+                    startActivity(intent)
+                }
             }
-
-
-            else if((id == "") && cont) {
-                val dishChildCreate = dishRef.child("dishID: " + childCount++.toString()) //get reference to dishID: #, which would create the db entry
-                dishChildCreate.setValue(dishToAdd) //actual creation of db entry
-                startActivity(intent)
-            }
-
         }
 
         catch (e:Exception) {
@@ -229,9 +247,14 @@ class DishCreate() : AppCompatActivity() {
     }
 
 
-    private fun castTo(setter: String) {
+    private fun castTo(setter: Boolean, dishRef: DatabaseReference) {
         id = setter
+
     }
+
 }
+
+
+
 
 

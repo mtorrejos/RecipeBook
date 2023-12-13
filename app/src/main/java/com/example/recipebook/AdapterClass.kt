@@ -50,6 +50,7 @@ class AdapterClass(var dishList : ArrayList<Dish>) : RecyclerView.Adapter<Adapte
         editButton.setOnClickListener() {
             val edit = Intent(holder.itemView.context, DishCreate::class.java)
             edit.putExtra("name", currentItems.name)
+            edit.putExtra("editing", true)
             holder.itemView.context.startActivity(edit)
         }
 
