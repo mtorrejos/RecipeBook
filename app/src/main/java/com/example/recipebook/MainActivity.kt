@@ -78,30 +78,6 @@ open class MainActivity : AppCompatActivity() {
 
     }
 
-
-    private fun setCount(i: Long) { //just sets the child count for the main view
-        childCount = i
-    }
-
-    private fun convertToBitmap(digits: String, width: Int, height: Int): Bitmap {
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-
-        // Set up Paint for drawing
-
-        val paint = Paint()
-        paint.color = Color.BLACK
-        paint.textSize = 40f
-
-        // Draw the digits on the canvas
-        canvas.drawText(digits, 0f, height / 2f, paint)
-
-        return bitmap
-    } //bruh i can't get this to work, might scrap
-
-    fun setBitmapToImageView(bitmap: Bitmap, imageView: ImageView) {
-        imageView.setImageBitmap(bitmap)
-    } //i am about to scrap this completely
 }
 
 
